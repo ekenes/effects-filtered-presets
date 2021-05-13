@@ -90,7 +90,11 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         listItemCreatedFunction: function (event) {
                             var item = event.item;
                             item.visible = item.layer.type === "feature";
-                            item.actionsOpen = true;
+                            var featureLayers = view.map.layers
+                                .filter(function (layer) { return layer.type === "feature"; });
+                            var finalFeatureLayer = featureLayers.getItemAt(featureLayers.length - 1);
+                            var showOptions = finalFeatureLayer.id === item.layer.id;
+                            item.actionsOpen = showOptions;
                             item.actionsSections = [[
                                     new ActionToggle({
                                         id: "drop-shadow",
@@ -110,7 +114,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                                 ]];
                             item.panel = {
                                 className: "esri-icon-filter",
-                                open: true,
+                                open: showOptions,
                                 title: "Filter data",
                                 listItem: item
                             };

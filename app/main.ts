@@ -56,8 +56,12 @@ import { createFilterPanelContent } from "./layerListUtils";
       const item = event.item as esri.ListItem;
 
       item.visible = item.layer.type === "feature";
+      const featureLayers = view.map.layers
+        .filter( layer => layer.type === "feature");
+      const finalFeatureLayer = featureLayers.getItemAt(featureLayers.length-1);
+      const showOptions = finalFeatureLayer.id === item.layer.id;
 
-      item.actionsOpen = true;
+      item.actionsOpen = showOptions;
 
       item.actionsSections = [[
         new ActionToggle({
@@ -79,7 +83,7 @@ import { createFilterPanelContent } from "./layerListUtils";
 
       item.panel = {
         className: "esri-icon-filter",
-        open: true,
+        open: showOptions,
         title: "Filter data",
         listItem: item
       } as esri.ListItemPanel;
