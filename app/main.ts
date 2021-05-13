@@ -55,6 +55,8 @@ import { createFilterPanelContent } from "./layerListUtils";
     listItemCreatedFunction: (event) => {
       const item = event.item as esri.ListItem;
 
+      item.visible = item.layer.type === "feature";
+
       item.actionsOpen = true;
 
       item.actionsSections = [[

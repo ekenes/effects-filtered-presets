@@ -89,6 +89,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         view: view,
                         listItemCreatedFunction: function (event) {
                             var item = event.item;
+                            item.visible = item.layer.type === "feature";
                             item.actionsOpen = true;
                             item.actionsSections = [[
                                     new ActionToggle({
