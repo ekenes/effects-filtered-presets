@@ -29,7 +29,11 @@ define(["require", "exports", "esri/views/layers/support/FeatureEffect", "esri/v
                 rangeLabels: true
             },
             rangeLabelInputsEnabled: true,
-            labelInputsEnabled: true
+            labelInputsEnabled: true,
+            disabled: true
+        });
+        fieldSelect.addEventListener("change", function () {
+            slider.disabled = fieldSelect.value === "";
         });
         slider.watch("values", function (values) {
             var layerView = panel.listItem.layerView;

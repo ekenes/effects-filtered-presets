@@ -42,7 +42,12 @@ export function createFilterPanelContent(params: CreateFilterPanelParams){
       rangeLabels: true
     },
     rangeLabelInputsEnabled: true,
-    labelInputsEnabled: true
+    labelInputsEnabled: true,
+    disabled: true
+  });
+
+  fieldSelect.addEventListener("change", () => {
+    slider.disabled = fieldSelect.value === "";
   });
 
   slider.watch("values", (values) => {
