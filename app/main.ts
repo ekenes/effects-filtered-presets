@@ -97,20 +97,15 @@ import { createFilterPanelContent } from "./layerListUtils";
     const actions = item.actionsSections.getItemAt(0);
 
     actions.forEach(action => {
-      if(action.id !== id ){
-        (action as ActionToggle).value = false;
-      }
-    })
+      (action as ActionToggle).value = action.id === id;
+    });
 
-    if(layerView.effect){
-      layerView.effect.includedEffect = effects[id].includedEffect;
-      layerView.effect.excludedEffect = effects[id].excludedEffect;
-    } else {
-      layerView.effect = new FeatureEffect({
-        ...effects[id]
-      })
-    }
+    const filter = layerView.effect && layerView.effect.filter ? layerView.effect.filter.clone() : null;
 
+    layerView.effect = new FeatureEffect({
+      filter,
+      ...effects[id]
+    });
 
   });
 

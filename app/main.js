@@ -124,17 +124,10 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         var layerView = item.layerView;
                         var actions = item.actionsSections.getItemAt(0);
                         actions.forEach(function (action) {
-                            if (action.id !== id) {
-                                action.value = false;
-                            }
+                            action.value = action.id === id;
                         });
-                        if (layerView.effect) {
-                            layerView.effect.includedEffect = effects[id].includedEffect;
-                            layerView.effect.excludedEffect = effects[id].excludedEffect;
-                        }
-                        else {
-                            layerView.effect = new FeatureEffect(__assign({}, effects[id]));
-                        }
+                        var filter = layerView.effect && layerView.effect.filter ? layerView.effect.filter.clone() : null;
+                        layerView.effect = new FeatureEffect(__assign({ filter: filter }, effects[id]));
                     });
                     return [2 /*return*/];
             }
