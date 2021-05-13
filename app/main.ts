@@ -23,7 +23,6 @@ import { createFilterPanelContent } from "./layerListUtils";
   });
 
   await map.load();
-
   await map.loadAll();
 
   const view = new MapView({
@@ -53,6 +52,10 @@ import { createFilterPanelContent } from "./layerListUtils";
     "opacity": {
       includedEffect: ``,
       excludedEffect: `opacity(40%)`
+    },
+    "bloom": {
+      includedEffect: "bloom(150%, 1px, 0.2)",
+      excludedEffect: "blur(1px) brightness(65%)"
     }
   }
 
@@ -107,7 +110,6 @@ import { createFilterPanelContent } from "./layerListUtils";
       filter,
       ...effects[id]
     });
-
   });
 
 })();

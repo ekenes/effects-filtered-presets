@@ -90,6 +90,10 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         "opacity": {
                             includedEffect: "",
                             excludedEffect: "opacity(40%)"
+                        },
+                        "bloom": {
+                            includedEffect: "bloom(150%, 1px, 0.2)",
+                            excludedEffect: "blur(1px) brightness(65%)"
                         }
                     };
                     layerList = new LayerList({
