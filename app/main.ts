@@ -1,3 +1,5 @@
+import esri = __esri;
+
 import WebMap = require("esri/WebMap");
 import MapView = require("esri/views/MapView");
 import Legend = require("esri/widgets/Legend");
@@ -5,7 +7,7 @@ import Expand = require("esri/widgets/Expand");
 import LayerList = require("esri/widgets/LayerList");
 
 import { getUrlParams } from "./urlParams";
-import { layer } from "esri/views/3d/support/LayerPerformanceInfo";
+import { createFilterPanelContent } from "./layerListUtils";
 
 
 ( async () => {
@@ -17,6 +19,8 @@ import { layer } from "esri/views/3d/support/LayerPerformanceInfo";
       id: webmap
     }
   });
+
+  await map.loadAll();
 
   const view = new MapView({
     map: map,
@@ -30,7 +34,21 @@ import { layer } from "esri/views/3d/support/LayerPerformanceInfo";
   }), "bottom-left");
 
   const layerList = new LayerList({
-    view
+    view,
+    listItemCreatedFunction: (event) => {
+      const item = event.item as esri.ListItem;
+
+      item.panel = {
+        className: "esri-icon-filter",
+        open: true,
+        title: "Filter data",
+        listItem: item
+      } as esri.ListItemPanel;
+
+      createFilterPanelContent({
+        panel: item.panel
+      })
+    }
   });
   view.ui.add(layerList, "top-right");
 

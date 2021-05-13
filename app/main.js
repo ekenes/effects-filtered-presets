@@ -34,32 +34,50 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/widgets/Expand", "esri/widgets/LayerList", "./urlParams"], function (require, exports, WebMap, MapView, Legend, Expand, LayerList, urlParams_1) {
+define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/widgets/Expand", "esri/widgets/LayerList", "./urlParams", "./layerListUtils"], function (require, exports, WebMap, MapView, Legend, Expand, LayerList, urlParams_1, layerListUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
         var webmap, map, view, layerList;
         return __generator(this, function (_a) {
-            webmap = urlParams_1.getUrlParams().webmap;
-            map = new WebMap({
-                portalItem: {
-                    id: webmap
-                }
-            });
-            view = new MapView({
-                map: map,
-                container: "viewDiv"
-            });
-            view.ui.add(new Expand({
-                content: new Legend({ view: view }),
-                view: view,
-                expanded: false
-            }), "bottom-left");
-            layerList = new LayerList({
-                view: view
-            });
-            view.ui.add(layerList, "top-right");
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    webmap = urlParams_1.getUrlParams().webmap;
+                    map = new WebMap({
+                        portalItem: {
+                            id: webmap
+                        }
+                    });
+                    return [4 /*yield*/, map.loadAll()];
+                case 1:
+                    _a.sent();
+                    view = new MapView({
+                        map: map,
+                        container: "viewDiv"
+                    });
+                    view.ui.add(new Expand({
+                        content: new Legend({ view: view }),
+                        view: view,
+                        expanded: false
+                    }), "bottom-left");
+                    layerList = new LayerList({
+                        view: view,
+                        listItemCreatedFunction: function (event) {
+                            var item = event.item;
+                            item.panel = {
+                                className: "esri-icon-filter",
+                                open: true,
+                                title: "Filter data",
+                                listItem: item
+                            };
+                            layerListUtils_1.createFilterPanelContent({
+                                panel: item.panel
+                            });
+                        }
+                    });
+                    view.ui.add(layerList, "top-right");
+                    return [2 /*return*/];
+            }
         });
     }); })();
 });
