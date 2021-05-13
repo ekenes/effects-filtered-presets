@@ -76,7 +76,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                     }), "bottom-left");
                     effects = {
                         "drop shadow": {
-                            includedEffect: "drop-shadow(2px, 2px, 2px, black)",
+                            includedEffect: "drop-shadow(2px, 2px, 2px, rgb(50,50,50))",
                             excludedEffect: " blur(2px) opacity(50%)"
                         },
                         "grayscale": {
@@ -85,7 +85,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         },
                         "blur": {
                             includedEffect: "",
-                            excludedEffect: "blur(10px) opacity(70%)"
+                            excludedEffect: "blur(10px) opacity(60%)"
                         },
                         "opacity": {
                             includedEffect: "",
