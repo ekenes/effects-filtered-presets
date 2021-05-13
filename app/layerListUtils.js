@@ -34,6 +34,20 @@ define(["require", "exports", "esri/views/layers/support/FeatureEffect", "esri/v
         });
         fieldSelect.addEventListener("change", function () {
             slider.disabled = fieldSelect.value === "";
+            var layerView = panel.listItem.layerView;
+            var field = fieldSelect.value;
+            if (layerView.effect) {
+                layerView.effect.filter = new FeatureFilter({
+                    where: field + " > " + slider.values[0]
+                });
+            }
+            else {
+                layerView.effect = new FeatureEffect({
+                    filter: new FeatureFilter({
+                        where: field + " > " + slider.values[0]
+                    })
+                });
+            }
         });
         slider.watch("values", function (values) {
             var layerView = panel.listItem.layerView;

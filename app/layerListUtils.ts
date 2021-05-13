@@ -48,6 +48,21 @@ export function createFilterPanelContent(params: CreateFilterPanelParams){
 
   fieldSelect.addEventListener("change", () => {
     slider.disabled = fieldSelect.value === "";
+
+    const layerView = panel.listItem.layerView as esri.FeatureLayerView;
+    const field = fieldSelect.value;
+
+    if(layerView.effect){
+      layerView.effect.filter = new FeatureFilter({
+        where: `${field} > ${slider.values[0]}`
+      });
+    } else {
+      layerView.effect = new FeatureEffect({
+        filter: new FeatureFilter({
+          where: `${field} > ${slider.values[0]}`
+        })
+      });
+    }
   });
 
   slider.watch("values", (values) => {
