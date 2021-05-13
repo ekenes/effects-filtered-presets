@@ -54,12 +54,17 @@ export function createFilterPanelContent(params: CreateFilterPanelParams){
     const layerView = panel.listItem.layerView as esri.FeatureLayerView;
     const field = fieldSelect.value;
 
-    layerView.effect = new FeatureEffect({
-      filter: new FeatureFilter({
+    if(layerView.effect){
+      layerView.effect.filter = new FeatureFilter({
         where: `${field} > ${values[0]}`
-      }),
-      excludedEffect: `opacity(0%)`
-    })
+      });
+    } else {
+      layerView.effect = new FeatureEffect({
+        filter: new FeatureFilter({
+          where: `${field} > ${values[0]}`
+        })
+      });
+    }
   });
 
   panelContent.appendChild(fieldSelect);

@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,11 +45,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/widgets/Expand", "esri/widgets/LayerList", "./urlParams", "./layerListUtils"], function (require, exports, WebMap, MapView, Legend, Expand, LayerList, urlParams_1, layerListUtils_1) {
+define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets/Legend", "esri/widgets/Expand", "esri/widgets/LayerList", "esri/support/actions/ActionToggle", "esri/views/layers/support/FeatureEffect", "./urlParams", "./layerListUtils"], function (require, exports, WebMap, MapView, Legend, Expand, LayerList, ActionToggle, FeatureEffect, urlParams_1, layerListUtils_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
-        var webmap, map, view, layerList;
+        var webmap, map, view, effects, layerList;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -60,10 +71,42 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         view: view,
                         expanded: false
                     }), "bottom-left");
+                    effects = {
+                        "drop-shadow": {
+                            includedEffect: "drop-shadow(2px, 2px, 2px, black)",
+                            excludedEffect: "opacity(50%) blur(2px)"
+                        },
+                        "grayscale": {
+                            includedEffect: "",
+                            excludedEffect: "grayscale(100%)"
+                        },
+                        "blur": {
+                            includedEffect: "",
+                            excludedEffect: "blur(10px)"
+                        }
+                    };
                     layerList = new LayerList({
                         view: view,
                         listItemCreatedFunction: function (event) {
                             var item = event.item;
+                            item.actionsOpen = true;
+                            item.actionsSections = [[
+                                    new ActionToggle({
+                                        id: "drop-shadow",
+                                        title: "drop shadow",
+                                        value: false
+                                    }),
+                                    new ActionToggle({
+                                        id: "grayscale",
+                                        title: "grayscale",
+                                        value: false
+                                    }),
+                                    new ActionToggle({
+                                        id: "blur",
+                                        title: "blur",
+                                        value: false
+                                    })
+                                ]];
                             item.panel = {
                                 className: "esri-icon-filter",
                                 open: true,
@@ -76,6 +119,23 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         }
                     });
                     view.ui.add(layerList, "top-right");
+                    layerList.on("trigger-action", function (event) {
+                        var id = event.action.id, item = event.item;
+                        var layerView = item.layerView;
+                        var actions = item.actionsSections.getItemAt(0);
+                        actions.forEach(function (action) {
+                            if (action.id !== id) {
+                                action.value = false;
+                            }
+                        });
+                        if (layerView.effect) {
+                            layerView.effect.includedEffect = effects[id].includedEffect;
+                            layerView.effect.excludedEffect = effects[id].excludedEffect;
+                        }
+                        else {
+                            layerView.effect = new FeatureEffect(__assign({}, effects[id]));
+                        }
+                    });
                     return [2 /*return*/];
             }
         });

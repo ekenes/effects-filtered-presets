@@ -38,12 +38,18 @@ define(["require", "exports", "esri/views/layers/support/FeatureEffect", "esri/v
         slider.watch("values", function (values) {
             var layerView = panel.listItem.layerView;
             var field = fieldSelect.value;
-            layerView.effect = new FeatureEffect({
-                filter: new FeatureFilter({
+            if (layerView.effect) {
+                layerView.effect.filter = new FeatureFilter({
                     where: field + " > " + values[0]
-                }),
-                excludedEffect: "opacity(0%)"
-            });
+                });
+            }
+            else {
+                layerView.effect = new FeatureEffect({
+                    filter: new FeatureFilter({
+                        where: field + " > " + values[0]
+                    })
+                });
+            }
         });
         panelContent.appendChild(fieldSelect);
         panelContent.appendChild(slider.container);
