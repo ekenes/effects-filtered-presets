@@ -22,6 +22,8 @@ import { createFilterPanelContent } from "./layerListUtils";
     }
   });
 
+  await map.load();
+
   await map.loadAll();
 
   const view = new MapView({
@@ -36,7 +38,7 @@ import { createFilterPanelContent } from "./layerListUtils";
   }), "bottom-left");
 
   const effects = {
-    "drop-shadow": {
+    "drop shadow": {
       includedEffect: `drop-shadow(2px, 2px, 2px, black)`,
       excludedEffect: `opacity(50%) blur(2px)`
     },
@@ -47,6 +49,10 @@ import { createFilterPanelContent } from "./layerListUtils";
     "blur": {
       includedEffect: ``,
       excludedEffect: `blur(10px)`
+    },
+    "opacity": {
+      includedEffect: ``,
+      excludedEffect: `opacity(40%)`
     }
   }
 
@@ -56,30 +62,19 @@ import { createFilterPanelContent } from "./layerListUtils";
       const item = event.item as esri.ListItem;
 
       item.visible = item.layer.type === "feature";
-      const featureLayers = view.map.layers
+      if(!item.visible){
+        return;
+      }
+      const featureLayers = view.map.allLayers
         .filter( layer => layer.type === "feature");
       const finalFeatureLayer = featureLayers.getItemAt(featureLayers.length-1);
       const showOptions = finalFeatureLayer.id === item.layer.id;
 
       item.actionsOpen = showOptions;
 
-      item.actionsSections = [[
-        new ActionToggle({
-          id: "drop-shadow",
-          title: "drop shadow",
-          value: false
-        }),
-        new ActionToggle({
-          id: "grayscale",
-          title: "grayscale",
-          value: false
-        }),
-        new ActionToggle({
-          id: "blur",
-          title: "blur",
-          value: false
-        })
-      ]] as any;
+      item.actionsSections = [
+        Object.keys(effects).map( (key: string) => new ActionToggle({ id: key, title: key, value: false }))
+      ] as any;
 
       item.panel = {
         className: "esri-icon-filter",

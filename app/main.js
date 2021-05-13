@@ -59,8 +59,11 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                             id: webmap
                         }
                     });
-                    return [4 /*yield*/, map.loadAll()];
+                    return [4 /*yield*/, map.load()];
                 case 1:
+                    _a.sent();
+                    return [4 /*yield*/, map.loadAll()];
+                case 2:
                     _a.sent();
                     view = new MapView({
                         map: map,
@@ -72,7 +75,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         expanded: false
                     }), "bottom-left");
                     effects = {
-                        "drop-shadow": {
+                        "drop shadow": {
                             includedEffect: "drop-shadow(2px, 2px, 2px, black)",
                             excludedEffect: "opacity(50%) blur(2px)"
                         },
@@ -83,6 +86,10 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         "blur": {
                             includedEffect: "",
                             excludedEffect: "blur(10px)"
+                        },
+                        "opacity": {
+                            includedEffect: "",
+                            excludedEffect: "opacity(40%)"
                         }
                     };
                     layerList = new LayerList({
@@ -90,28 +97,17 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         listItemCreatedFunction: function (event) {
                             var item = event.item;
                             item.visible = item.layer.type === "feature";
-                            var featureLayers = view.map.layers
+                            if (!item.visible) {
+                                return;
+                            }
+                            var featureLayers = view.map.allLayers
                                 .filter(function (layer) { return layer.type === "feature"; });
                             var finalFeatureLayer = featureLayers.getItemAt(featureLayers.length - 1);
                             var showOptions = finalFeatureLayer.id === item.layer.id;
                             item.actionsOpen = showOptions;
-                            item.actionsSections = [[
-                                    new ActionToggle({
-                                        id: "drop-shadow",
-                                        title: "drop shadow",
-                                        value: false
-                                    }),
-                                    new ActionToggle({
-                                        id: "grayscale",
-                                        title: "grayscale",
-                                        value: false
-                                    }),
-                                    new ActionToggle({
-                                        id: "blur",
-                                        title: "blur",
-                                        value: false
-                                    })
-                                ]];
+                            item.actionsSections = [
+                                Object.keys(effects).map(function (key) { return new ActionToggle({ id: key, title: key, value: false }); })
+                            ];
                             item.panel = {
                                 className: "esri-icon-filter",
                                 open: showOptions,
