@@ -64,8 +64,7 @@ import { createFilterPanelContent } from "./layerListUtils";
     listItemCreatedFunction: (event) => {
       const item = event.item as esri.ListItem;
 
-      item.visible = item.layer.type === "feature";
-      if(!item.visible){
+      if(item.layer.type !== "feature"){
         return;
       }
       const featureLayers = view.map.allLayers
@@ -94,22 +93,23 @@ import { createFilterPanelContent } from "./layerListUtils";
   view.ui.add(layerList, "top-right");
 
   layerList.on("trigger-action", (event) => {
-    const { action: { id }, item } = event;
+    const { action, item } = event;
+    const { id, value } = action as esri.ActionToggle;
 
     const layerView = item.layerView as esri.FeatureLayerView;
 
     const actions = item.actionsSections.getItemAt(0);
 
     actions.forEach(action => {
-      (action as ActionToggle).value = action.id === id;
+      (action as ActionToggle).value = (action as ActionToggle).value && action.id === id;
     });
 
     const filter = layerView.effect && layerView.effect.filter ? layerView.effect.filter.clone() : null;
 
-    layerView.effect = new FeatureEffect({
+    layerView.effect = value ? new FeatureEffect({
       filter,
       ...effects[id]
-    });
+    }) : null;
   });
 
 })();

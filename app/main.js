@@ -100,8 +100,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         view: view,
                         listItemCreatedFunction: function (event) {
                             var item = event.item;
-                            item.visible = item.layer.type === "feature";
-                            if (!item.visible) {
+                            if (item.layer.type !== "feature") {
                                 return;
                             }
                             var featureLayers = view.map.allLayers
@@ -125,14 +124,15 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                     });
                     view.ui.add(layerList, "top-right");
                     layerList.on("trigger-action", function (event) {
-                        var id = event.action.id, item = event.item;
+                        var action = event.action, item = event.item;
+                        var _a = action, id = _a.id, value = _a.value;
                         var layerView = item.layerView;
                         var actions = item.actionsSections.getItemAt(0);
                         actions.forEach(function (action) {
-                            action.value = action.id === id;
+                            action.value = action.value && action.id === id;
                         });
                         var filter = layerView.effect && layerView.effect.filter ? layerView.effect.filter.clone() : null;
-                        layerView.effect = new FeatureEffect(__assign({ filter: filter }, effects[id]));
+                        layerView.effect = value ? new FeatureEffect(__assign({ filter: filter }, effects[id])) : null;
                     });
                     return [2 /*return*/];
             }
