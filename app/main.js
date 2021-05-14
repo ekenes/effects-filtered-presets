@@ -69,6 +69,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         map: map,
                         container: "viewDiv"
                     });
+                    view.ui.add("titleDiv", "top-right");
                     view.ui.add(new Expand({
                         content: new Legend({ view: view }),
                         view: view,
