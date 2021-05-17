@@ -133,7 +133,11 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                             action.value = action.value && action.id === id;
                         });
                         var filter = layerView.effect && layerView.effect.filter ? layerView.effect.filter.clone() : null;
-                        layerView.effect = value ? new FeatureEffect(__assign({ filter: filter }, effects[id])) : null;
+                        layerView.effect = value ? new FeatureEffect(__assign({ filter: filter }, effects[id])) : new FeatureEffect({
+                            filter: filter,
+                            includedEffect: "",
+                            excludedEffect: "opacity(0%)"
+                        });
                     });
                     return [2 /*return*/];
             }

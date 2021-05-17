@@ -110,7 +110,12 @@ import { createFilterPanelContent } from "./layerListUtils";
     layerView.effect = value ? new FeatureEffect({
       filter,
       ...effects[id]
-    }) : null;
+    }) : new FeatureEffect({
+      filter,
+      includedEffect: ``,
+      excludedEffect: `opacity(0%)`
+    });
+
   });
 
 })();

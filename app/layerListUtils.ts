@@ -60,7 +60,9 @@ export function createFilterPanelContent(params: CreateFilterPanelParams){
       layerView.effect = new FeatureEffect({
         filter: new FeatureFilter({
           where: `${field} > ${slider.values[0]}`
-        })
+        }),
+        includedEffect: ``,
+        excludedEffect: `opacity(0%)`
       });
     }
   });
@@ -77,7 +79,9 @@ export function createFilterPanelContent(params: CreateFilterPanelParams){
       layerView.effect = new FeatureEffect({
         filter: new FeatureFilter({
           where: `${field} > ${values[0]}`
-        })
+        }),
+        includedEffect: ``,
+        excludedEffect: `opacity(0%)`
       });
     }
   });

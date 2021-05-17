@@ -45,7 +45,9 @@ define(["require", "exports", "esri/views/layers/support/FeatureEffect", "esri/v
                 layerView.effect = new FeatureEffect({
                     filter: new FeatureFilter({
                         where: field + " > " + slider.values[0]
-                    })
+                    }),
+                    includedEffect: "",
+                    excludedEffect: "opacity(0%)"
                 });
             }
         });
@@ -61,7 +63,9 @@ define(["require", "exports", "esri/views/layers/support/FeatureEffect", "esri/v
                 layerView.effect = new FeatureEffect({
                     filter: new FeatureFilter({
                         where: field + " > " + values[0]
-                    })
+                    }),
+                    includedEffect: "",
+                    excludedEffect: "opacity(0%)"
                 });
             }
         });
