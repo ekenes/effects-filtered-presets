@@ -53,13 +53,13 @@ import { createFilterPanelContent } from "./layerListUtils";
       includedEffect: `drop-shadow(2px, 2px, 6px, rgb(50,50,50))`,
       excludedEffect: `opacity(50%)`
     },
-    "Blurry shadow": {
+    "Shadow + blur": {
+      includedEffect: `drop-shadow(2px, 2px, 3px, rgb(50,50,50))`,
+      excludedEffect: `blur(3px) opacity(65%)`
+    },
+    "Shadow + grey": {
       includedEffect: `drop-shadow(2px, 2px, 3px, rgb(50,50,50))`,
       excludedEffect: `grayscale(100%) opacity(50%)`
-    },
-    "Grey shadow": {
-      includedEffect: ``,
-      excludedEffect: `opacity(40%)`
     },
     "Floating clouds": {
       includedEffect: `drop-shadow(10px, 10px, 15px, #000000)`,
