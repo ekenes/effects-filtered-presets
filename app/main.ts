@@ -7,6 +7,7 @@ import Expand = require("esri/widgets/Expand");
 import LayerList = require("esri/widgets/LayerList");
 import ActionToggle = require("esri/support/actions/ActionToggle");
 import FeatureEffect = require("esri/views/layers/support/FeatureEffect");
+import BasemapGallery = require("esri/widgets/BasemapGallery");
 
 import { getUrlParams } from "./urlParams";
 import { createFilterPanelContent } from "./layerListUtils";
@@ -33,6 +34,12 @@ import { createFilterPanelContent } from "./layerListUtils";
 
   view.ui.add(new Expand({
     content: new Legend({ view }),
+    view,
+    expanded: false
+  }), "bottom-left");
+
+  view.ui.add(new Expand({
+    content: new BasemapGallery({ view }),
     view,
     expanded: false
   }), "bottom-left");
