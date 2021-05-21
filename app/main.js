@@ -49,7 +49,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     (function () { return __awaiter(void 0, void 0, void 0, function () {
-        var webmap, map, view, effects, layerList;
+        var webmap, map, view, lightEffects, darkEffects, universalEffects, effects, createActions, layerList;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -75,28 +75,54 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         view: view,
                         expanded: false
                     }), "bottom-left");
-                    effects = {
-                        "drop shadow": {
-                            includedEffect: "drop-shadow(2px, 2px, 2px, rgb(50,50,50))",
-                            excludedEffect: " blur(2px) opacity(50%)"
+                    lightEffects = {
+                        "Strong shadow": {
+                            includedEffect: "drop-shadow(4px, 4px, 4px, #000000)",
+                            excludedEffect: ""
                         },
-                        "grayscale": {
-                            includedEffect: "",
+                        "Light shadow": {
+                            includedEffect: "drop-shadow(2px, 2px, 6px, rgb(50,50,50))",
+                            excludedEffect: "opacity(50%)"
+                        },
+                        "Blurry shadow": {
+                            includedEffect: "drop-shadow(2px, 2px, 3px, rgb(50,50,50))",
                             excludedEffect: "grayscale(100%) opacity(50%)"
                         },
-                        "blur": {
-                            includedEffect: "",
-                            excludedEffect: "blur(10px) opacity(60%)"
-                        },
-                        "opacity": {
+                        "Grey shadow": {
                             includedEffect: "",
                             excludedEffect: "opacity(40%)"
                         },
-                        "bloom": {
-                            includedEffect: "bloom(150%, 1px, 0.2)",
-                            excludedEffect: "blur(1px) brightness(65%)"
+                        "Floating clouds": {
+                            includedEffect: "drop-shadow(10px, 10px, 15px, #000000)",
+                            excludedEffect: ""
                         }
                     };
+                    darkEffects = {
+                        "Bloom + opacity": {
+                            includedEffect: "bloom(1.3, 0.75px, 0.3)",
+                            excludedEffect: "opacity(65%)"
+                        },
+                        "Bloom + blur": {
+                            includedEffect: "bloom(1.3, 0.75px, 0.3)",
+                            excludedEffect: "blur(3px) opacity(65%)"
+                        },
+                        "Bloom + Greyscale": {
+                            includedEffect: "bloom(1.3, 0.75px, 0.3)",
+                            excludedEffect: "grayscale(100%) opacity(65%)"
+                        }
+                    };
+                    universalEffects = {
+                        "Muted blur": {
+                            includedEffect: "",
+                            excludedEffect: "blur(3px) opacity(50%)"
+                        },
+                        "Muted greyscale": {
+                            includedEffect: "",
+                            excludedEffect: "grayscale(100%) opacity(50%)"
+                        }
+                    };
+                    effects = __assign(__assign(__assign({}, lightEffects), darkEffects), universalEffects);
+                    createActions = function (effects) { return Object.keys(effects).map(function (key) { return new ActionToggle({ id: key, title: key, value: false }); }); };
                     layerList = new LayerList({
                         view: view,
                         listItemCreatedFunction: function (event) {
@@ -110,7 +136,9 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                             var showOptions = finalFeatureLayer.id === item.layer.id;
                             item.actionsOpen = showOptions;
                             item.actionsSections = [
-                                Object.keys(effects).map(function (key) { return new ActionToggle({ id: key, title: key, value: false }); })
+                                createActions(universalEffects),
+                                createActions(lightEffects),
+                                createActions(darkEffects)
                             ];
                             item.panel = {
                                 className: "esri-icon-filter",
@@ -128,7 +156,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         var action = event.action, item = event.item;
                         var _a = action, id = _a.id, value = _a.value;
                         var layerView = item.layerView;
-                        var actions = item.actionsSections.getItemAt(0);
+                        var actions = item.actionsSections.reduce(function (p, c) { return p.concat(c); });
                         actions.forEach(function (action) {
                             action.value = action.value && action.id === id;
                         });

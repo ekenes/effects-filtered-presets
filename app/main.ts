@@ -37,28 +37,62 @@ import { createFilterPanelContent } from "./layerListUtils";
     expanded: false
   }), "bottom-left");
 
-  const effects = {
-    "drop shadow": {
-      includedEffect: `drop-shadow(2px, 2px, 2px, rgb(50,50,50))`,
-      excludedEffect: ` blur(2px) opacity(50%)`
+  const lightEffects = {
+    "Strong shadow": {
+      includedEffect: `drop-shadow(4px, 4px, 4px, #000000)`,
+      excludedEffect: ``
     },
-    "grayscale": {
-      includedEffect: ``,
+    "Light shadow": {
+      includedEffect: `drop-shadow(2px, 2px, 6px, rgb(50,50,50))`,
+      excludedEffect: `opacity(50%)`
+    },
+    "Blurry shadow": {
+      includedEffect: `drop-shadow(2px, 2px, 3px, rgb(50,50,50))`,
       excludedEffect: `grayscale(100%) opacity(50%)`
     },
-    "blur": {
-      includedEffect: ``,
-      excludedEffect: `blur(10px) opacity(60%)`
-    },
-    "opacity": {
+    "Grey shadow": {
       includedEffect: ``,
       excludedEffect: `opacity(40%)`
     },
-    "bloom": {
-      includedEffect: "bloom(150%, 1px, 0.2)",
-      excludedEffect: "blur(1px) brightness(65%)"
+    "Floating clouds": {
+      includedEffect: `drop-shadow(10px, 10px, 15px, #000000)`,
+      excludedEffect: ``
     }
   }
+
+  const darkEffects = {
+    "Bloom + opacity": {
+      includedEffect: `bloom(1.3, 0.75px, 0.3)`,
+      excludedEffect: `opacity(65%)`
+    },
+    "Bloom + blur": {
+      includedEffect: `bloom(1.3, 0.75px, 0.3)`,
+      excludedEffect: `blur(3px) opacity(65%)`
+    },
+    "Bloom + Greyscale": {
+      includedEffect: `bloom(1.3, 0.75px, 0.3)`,
+      excludedEffect: `grayscale(100%) opacity(65%)`
+    }
+  };
+
+  const universalEffects = {
+    "Muted blur": {
+      includedEffect: ``,
+      excludedEffect: `blur(3px) opacity(50%)`
+    },
+    "Muted greyscale": {
+      includedEffect: ``,
+      excludedEffect: `grayscale(100%) opacity(50%)`
+    }
+  };
+
+  const effects = {
+    ...lightEffects,
+    ...darkEffects,
+    ...universalEffects
+  };
+
+  const createActions = (effects:any) => Object.keys(effects).map( (key: string) => new ActionToggle({ id: key, title: key, value: false }));
 
   const layerList = new LayerList({
     view,
@@ -76,7 +110,9 @@ import { createFilterPanelContent } from "./layerListUtils";
       item.actionsOpen = showOptions;
 
       item.actionsSections = [
-        Object.keys(effects).map( (key: string) => new ActionToggle({ id: key, title: key, value: false }))
+        createActions(universalEffects),
+        createActions(lightEffects),
+        createActions(darkEffects)
       ] as any;
 
       item.panel = {
@@ -99,7 +135,7 @@ import { createFilterPanelContent } from "./layerListUtils";
 
     const layerView = item.layerView as esri.FeatureLayerView;
 
-    const actions = item.actionsSections.getItemAt(0);
+    const actions = item.actionsSections.reduce((p, c) => p.concat(c));
 
     actions.forEach(action => {
       (action as ActionToggle).value = (action as ActionToggle).value && action.id === id;
