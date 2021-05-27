@@ -17,7 +17,8 @@
     "url": "https://github.com/ekenes/effects-filtered-presets/issues"
   },
   "homepage": "https://github.com/ekenes/effects-filtered-presets#readme",
-  "dependencies": {
-    "@types/arcgis-js-api": "^4.19.0"
+  "dependencies": {},
+  "devDependencies": {
+    "@types/arcgis-js-api": "https://jsapi.esri.com/typings/arcgis-js-api-4.20.tgz"
   }
 }
