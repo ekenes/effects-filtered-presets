@@ -73,12 +73,14 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                     view.ui.add(new Expand({
                         content: new Legend({ view: view }),
                         view: view,
-                        expanded: false
+                        expanded: false,
+                        group: "bottom-left"
                     }), "bottom-left");
                     view.ui.add(new Expand({
                         content: new BasemapGallery({ view: view }),
                         view: view,
-                        expanded: false
+                        expanded: false,
+                        group: "bottom-left"
                     }), "bottom-left");
                     lightEffects = {
                         "Strong shadow": {

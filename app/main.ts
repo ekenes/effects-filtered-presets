@@ -35,13 +35,15 @@ import { createFilterPanelContent } from "./layerListUtils";
   view.ui.add(new Expand({
     content: new Legend({ view }),
     view,
-    expanded: false
+    expanded: false,
+    group: "bottom-left"
   }), "bottom-left");
 
   view.ui.add(new Expand({
     content: new BasemapGallery({ view }),
     view,
-    expanded: false
+    expanded: false,
+    group: "bottom-left"
   }), "bottom-left");
 
   const lightEffects = {
