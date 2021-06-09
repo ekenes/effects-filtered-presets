@@ -123,7 +123,7 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                             includedEffect: "",
                             excludedEffect: "blur(3px) opacity(50%)"
                         },
-                        "Muted greyscale": {
+                        "Muted grayscale": {
                             includedEffect: "",
                             excludedEffect: "grayscale(100%) opacity(50%)"
                         }
