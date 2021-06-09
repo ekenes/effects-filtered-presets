@@ -83,19 +83,19 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         group: "bottom-left"
                     }), "bottom-left");
                     lightEffects = {
-                        "Strong shadow": {
+                        "Lift 1": {
                             includedEffect: "drop-shadow(4px, 4px, 4px, #000000)",
                             excludedEffect: ""
                         },
-                        "Light shadow": {
+                        "Lift 2": {
                             includedEffect: "drop-shadow(2px, 2px, 6px, rgb(50,50,50))",
                             excludedEffect: "opacity(50%)"
                         },
-                        "Shadow + blur": {
+                        "Lift 3": {
                             includedEffect: "drop-shadow(2px, 2px, 3px, rgb(50,50,50))",
                             excludedEffect: "blur(3px) opacity(65%)"
                         },
-                        "Shadow + grey": {
+                        "Lift 4": {
                             includedEffect: "drop-shadow(2px, 2px, 3px, rgb(50,50,50))",
                             excludedEffect: "grayscale(100%) opacity(50%)"
                         },
@@ -105,15 +105,15 @@ define(["require", "exports", "esri/WebMap", "esri/views/MapView", "esri/widgets
                         }
                     };
                     darkEffects = {
-                        "Bloom + opacity": {
+                        "Bloom 1": {
                             includedEffect: "bloom(1.3, 0.75px, 0.3)",
                             excludedEffect: "opacity(65%)"
                         },
-                        "Bloom + blur": {
+                        "Bloom 2": {
                             includedEffect: "bloom(1.3, 0.75px, 0.3)",
                             excludedEffect: "blur(3px) opacity(65%)"
                         },
-                        "Bloom + Greyscale": {
+                        "Bloom 3": {
                             includedEffect: "bloom(1.3, 0.75px, 0.3)",
                             excludedEffect: "grayscale(100%) opacity(65%)"
                         }
